@@ -1,0 +1,86 @@
+﻿@model string
+@using System.Drawing
+@using Stimulsoft.Report.Mvc
+@using Stimulsoft.Report.Web
+
+@{
+    ViewData["Title"] = "Reporting - " + ViewBag.reportingcontroller;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Reporting</h1>
+
+@Html.StiNetCoreViewer(new StiNetCoreViewerOptions()
+{
+
+    Actions =
+    {
+        GetReport = $"GetReport?{Model}",
+        ViewerEvent = "ViewerEvent"
+    },
+    Server = new StiNetCoreViewerOptions.ServerOptions()
+    {
+        CacheMode = StiServerCacheMode.ObjectCache,
+        PassQueryParametersToReport = true,
+        RouteTemplate = "api/" + ViewBag.reportingcontroller,
+        UseRelativeUrls = true,
+        RequestTimeout = 600000,
+        PassFormValues = true,
+    },
+    Toolbar =
+    {
+        ShowAboutButton = false,
+        ShowOpenButton=false,
+        ShowDesignButton = false,
+        ShowEditorButton = false,
+        ShowRefreshButton = false,
+       // ShowResourcesButton = false,
+       // ShowParametersButton = false,
+    },
+    Appearance = new StiNetCoreViewerOptions.AppearanceOptions()
+    {
+        ScrollbarsMode = true,
+        FullScreenMode = false,
+        ShowTooltipsHelp = false,
+        ShowTooltips = false
+    },
+    Theme = StiViewerTheme.Office2003,
+    
+    Exports =
+    {
+        ShowExportToDbf = false,
+        ShowExportToCsv = false,
+        ShowExportToDocument = false,
+        ShowExportToDif = false,
+        ShowExportToExcelXml = false,
+        ShowExportToImageMetafile = false,
+        ShowExportToImagePcx = false,
+        ShowExportToImageSvg = false,
+        ShowExportToImageSvgz = false,
+        ShowExportToImageTiff = false,
+        ShowExportToJson = false,
+        ShowExportToMht = false,
+        ShowExportToOpenDocumentCalc = false,
+        ShowExportToRtf = false,
+        ShowExportToSylk = false,
+        ShowExportToXml = false,
+        ShowExportToOpenDocumentWriter = false,
+    }
+})
+
+<script type="text/javascript">
+
+    jsNetCoreViewer.onready = function () {
+        var customButton = jsNetCoreViewer.SmallButton("customButton", "Custom Button", "emptyImage");
+        customButton.image.src = "https://www.stimulsoft.com/images/logo_16.png";
+        customButton.action = function () {
+            alert("Custom Button Event");
+        }
+        var toolbarTable = jsNetCoreViewer.controls.toolbar.firstChild.firstChild;
+        var buttonsTable = toolbarTable.rows[0].firstChild.firstChild;
+        var customButtonCell = buttonsTable.rows[0].insertCell(0);
+        customButtonCell.appendChild(customButton);
+
+
+    }
+</script>

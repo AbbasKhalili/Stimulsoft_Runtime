@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <h1> Equipment Reporting Index</h1>
+
+    <form method="post" action="EquipmentReporting/loadreportpage">
+        Date1 : <input name="Date1" />
+        <br />
+        Date2 : <input name="Date2" />
+        <br />
+        DepartmentList : <input name="DepartmentList" />
+        <br />
+        CategoryList : <input name="CategoryList" />
+        <br />
+        Equip1 : <input name="Equip1" />
+        <br />
+        Equip2 : <input name="Equip2" />
+        <br />
+        Barcode1 : <input name="Barcode1" />
+        <br />
+        Barcode2 : <input name="Barcode2" />
+        <br />
+        InspectionType : <input name="InspectionType" />
+        <br />
+        Location : <input name="Location" />
+        <br />
+        UserId : <input name="UserId" />
+        <br />
+        EquipList : <input name="EquipList" />
+        <br />
+        Language : <input name="Language" />
+        <br />
+        @*SetupMultiLocation : <input type="checkbox" name="SetupMultiLocation" />
+        <br />*@
+        <input type="submit" />
+    </form>

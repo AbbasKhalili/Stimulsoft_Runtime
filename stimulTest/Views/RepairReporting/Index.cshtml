@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <h1> Repair Reporting Index</h1>
+
+    <form method="post" action="RepairReporting/loadreportpage">
+        Date1 : <input name="Date1" />
+        <br />
+        Date2 : <input name="Date2" />
+        <br />
+        Production : <input name="Production" />
+        <br />
+        RepLocationList : <input name="RepLocationList" />
+        <br />
+        Location : <input name="Location" />
+        <br />
+        Currency : <input name="Currency" />
+        <br />
+        UserId : <input name="UserId" />
+        <br />
+        EquipList : <input name="EquipList" />
+        <br />
+        Language : <input name="Language" />
+        <br />
+        OwnerList : <input name="OwnerList" />
+        <br />
+        @*IncludeBilled : <input type="checkbox" name="IncludeBilled" />
+        <br />
+        CurrentlyInRepair : <input type="checkbox" name="CurrentlyInRepair" />
+        <br />*@
+        <input type="submit" />
+    </form>

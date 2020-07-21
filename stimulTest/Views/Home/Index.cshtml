@@ -1,0 +1,246 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<input id="clickMe" type="button" value="clickme" onclick="callreport();" />
+
+<input id="clickMe2" type="button" value="click e i" onclick="callreportEI();" />
+
+<input id="GETme" type="button" value="click GET" onclick="getme();" />
+
+<div id="content12"></div>
+
+<script type="text/javascript">
+    function getme() {
+        var options = new Stimulsoft.Viewer.StiViewerOptions();
+        var viewer = new Stimulsoft.Viewer.StiViewer(options, 'StiViewer', false);
+        viewer.renderHtml('content12');
+
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json charset=utf-8',
+            url: "api/viewer",
+            success: function (response) {
+                debugger;
+            },
+            error: function (request, status, error) {
+                debugger;
+                console.log("There was an error: ", request.responseText);
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+
+    //$(document).ready(function () {
+
+    function callreportEI() {
+        
+        var data11 = {
+            DepartmentList: "",
+            CategoryList: "",
+            Equip1: "",
+            Equip2: "",
+            Barcode1: "",
+            Barcode2: "",
+            InspectionType: "",
+            Location: "",
+            UserId: "",
+            EquipList: "",
+            Language: "",
+            SetupMultiLocation:false
+        };
+
+        var filters = JSON.stringify(data11);
+
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json charset=utf-8',
+            data: filters,
+            url: "api/viewer",
+            success: function (response) {
+                debugger;
+
+                var report = new Stimulsoft.Report.StiReport();
+                report.loadDocument(response);
+                renderViewer(report);
+
+            },
+            error: function (request, status, error) {
+                debugger;
+                console.log("There was an error: ", request.responseText);
+            }
+        });
+    }
+
+
+
+    function callreport() {
+        var data11 = {
+            UserId: "rti",
+            Production: "",
+            RepLocationList: "",
+            Location: "",
+            Currency: "",
+            EquipList: "",
+            Language: "",
+            OwnerList: "",
+            IncludeBilled: false,
+            CurrentlyInRepair: false
+        };
+
+        var filters = JSON.stringify(data11);
+
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json charset=utf-8',
+            data: filters,
+            url: "api/RepairReport/makereport",// "http://rtprosl.ddnsfree.com/api/RepairReport/makereport",
+            success: function (response) {
+                debugger;
+
+                var report = new Stimulsoft.Report.StiReport();
+                //report.loadDocumentFromXml(response);
+                report.loadDocument(response);
+                //load(response.reportTemplate);
+                //report.dictionary.databases.clear();
+
+
+                //var res = JSON.stringify(response.data.dataSets[0].resource);
+                    
+                //var dataSet = new Stimulsoft.System.Data.DataSet(response.data.dataSets[0].dataSetName);
+                //dataSet.readJson(res);
+                //report.regData(dataSet.dataSetName, null, dataSet);
+
+
+                renderViewer(report);
+
+            },
+            error: function (request, status, error) {
+                debugger;
+                console.log("There was an error: ", request.responseText);
+            }
+        });
+    }
+
+    function renderViewer(report) {
+        debugger;
+        var options = new Stimulsoft.Viewer.StiViewerOptions();
+        options.toolbar.showRefreshButton = false;
+        options.toolbar.showFirstPageButton = false;
+        options.toolbar.showPreviousPageButton = false;
+        options.toolbar.showCurrentPageControl = true;
+        options.toolbar.showNextPageButton = false;
+        options.toolbar.showLastPageButton = false;
+        options.toolbar.showSendEmailButton = true;
+
+        options.toolbar.showBookmarksButton = true;
+        options.appearance.bookmarksTreeWidth = 200;
+        options.appearance.bookmarksPrint = true;
+
+        //options.server.controller = "Viewer";
+
+
+        var viewer = new Stimulsoft.Viewer.StiViewer(options, "StiViewer", false);
+        if (report == undefined)
+            report = new Stimulsoft.Report.StiReport();
+        viewer.report = report;
+        viewer.renderHtml("content12");
+
+            
+
+        var toolbarTable = viewer.jsObject.controls.toolbar.firstChild.firstChild;
+        var buttonsTable = toolbarTable.rows[0].firstChild.firstChild;
+
+
+        var firstButton = viewer.jsObject.SmallButton("FirstPage", null, "");
+        firstButton.image.src = "/js/firstpage.png";
+        firstButton.action = function () {
+            debugger;
+            viewer.jsObject.postAction("FirstPage");
+        }
+        var firstButtonCell = buttonsTable.rows[0].insertCell(11);
+        firstButtonCell.className = "stiJsViewerClearAllStyles";
+        firstButtonCell.appendChild(firstButton);
+
+        var backButton = viewer.jsObject.SmallButton("PreviousPage", null, "emptyImage");
+        backButton.image.src = "/js/prevpage.png";
+        backButton.action = function () {
+            debugger;
+            viewer.jsObject.postAction("PrevPage");
+        }
+        var backButtonCell = buttonsTable.rows[0].insertCell(12);
+        backButtonCell.className = "stiJsViewerClearAllStyles";
+        backButtonCell.appendChild(backButton);
+
+
+
+        var nextButton = viewer.jsObject.SmallButton("NextPage", null, "emptyImage");
+        nextButton.image.src = "/js/nextpage.png";
+        nextButton.action = function () {
+            debugger;
+            viewer.jsObject.postAction("NextPage");
+        }
+        var nextButtonCell = buttonsTable.rows[0].insertCell(14);
+        nextButtonCell.className = "stiJsViewerClearAllStyles";
+        nextButtonCell.appendChild(nextButton);
+
+
+
+        var lastButton = viewer.jsObject.SmallButton("LastPage", null, "emptyImage");
+        lastButton.image.src = "/js/lastpage.png";
+        lastButton.action = function () {
+            debugger;
+            viewer.jsObject.postAction("LastPage");
+        }
+        var lastButtonCell = buttonsTable.rows[0].insertCell(15);
+        lastButtonCell.className = "stiJsViewerClearAllStyles";
+        lastButtonCell.appendChild(lastButton);
+
+
+        var itmList = [];
+        itmList.push(viewer.jsObject.Item("name1", "caption1", "imageName1", "key1", false, 16));
+        itmList.push(viewer.jsObject.Item("name2", "caption2", "imageName2", "key2", false, 16));
+        var droplist = viewer.jsObject.DropDownList("droplist", 100, "", itmList, true);
+        droplist.action = function () {
+            debugger;
+            alert(droplist.key);
+        }
+        var droplistCell = buttonsTable.rows[0].insertCell(16);
+        droplistCell.className = "stiJsViewerClearAllStyles";
+        droplistCell.appendChild(droplist);
+
+
+            
+        viewer.jsObject.collections.images["menuItem1"] = "http://www.stimulsoft.com/media/mod_falang/images/fr.gif";
+        viewer.jsObject.collections.images["menuItem2"] = "http://www.stimulsoft.com/media/mod_falang/images/de.gif";
+        var ccButton = viewer.jsObject.SmallButton("", "Custom list", "emptyImage",null,"Down");
+        ccButton.image.src = "/js/lastpage.png";
+        var ccButtonCell = buttonsTable.rows[0].insertCell(10);
+        ccButtonCell.className = "stiJsViewerClearAllStyles";
+        ccButtonCell.appendChild(ccButton);
+        var ccItems = [];
+        ccItems.push(viewer.jsObject.Item("menuItem1", "Menu Item 1", "menuItem1", "MenuItemKey1"));
+        ccItems.push(viewer.jsObject.Item("menuItem2", "Menu Item 2", "menuItem2", "MenuItemKey2"));
+        var userMenu = viewer.jsObject.VerticalMenu("userMenu", ccButton, "Down", ccItems);
+        ccButton.action = function () { userMenu.changeVisibleState(!userMenu.visible); }
+        userMenu.action = function (menuItem) {
+            userMenu.changeVisibleState(false);
+            alert(menuItem.key);
+        }
+
+
+            
+    }
+
+
+    renderViewer();
+        
+    //});
+
+
+
+</script>
